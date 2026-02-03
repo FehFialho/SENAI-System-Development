@@ -20,4 +20,14 @@ use("bosch");
 
 //db.people.find({salar: { $gt: 1}}) // Greater Than
 
-db.people.find({salar: { $gte: 2}}, {name :1, lastname:1}) // 1 é como True
+//db.people.find({salar: { $gte: 2}}, {name :1, lastname:1}) // 1 é como True
+
+db.people.updateOne(
+    { _id: ObjectId('6981f370401f37942252f87d')},
+    { $set: { lastname: 'Status'}}
+)
+
+db.people.updateMany(
+    { salar: 1 },
+    { $set: { salar: 2}}
+)
