@@ -16,4 +16,8 @@ use("bosch");
 
 //db.people.find({name: /^D.*n$/ }) // Começa com D e termina com N
 
-db.people.find($and [{ name: 'Cesar'}, { lastname: 'Stati'}] ) // And SQL
+//db.people.find({$and: [{ name: 'Cesar'}, { lastname: 'Stati'}]} ) // And SQL
+
+//db.people.find({salar: { $gt: 1}}) // Greater Than
+
+db.people.find({salar: { $gte: 2}}, {name :1, lastname:1}) // 1 é como True
