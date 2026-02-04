@@ -12,15 +12,15 @@ use("bosch");
 // Utilizada para buscar, substituir ou validar texto de acordo com padrões.
 // Like do SQL.
 
-//db.people.find({name: /n/ }) //Contem N
+db.people.find({name: /n/ }) //Contem N
 
-//db.people.find({name: /^D.*n$/ }) // Começa com D e termina com N
+db.people.find({name: /^D.*n$/ }) // Começa com D e termina com N
 
-//db.people.find({$and: [{ name: 'Cesar'}, { lastname: 'Stati'}]} ) // And SQL
+db.people.find({$and: [{ name: 'Cesar'}, { lastname: 'Stati'}]} ) // And SQL
 
-//db.people.find({salar: { $gt: 1}}) // Greater Than
+db.people.find({salar: { $gt: 1}}) // Greater Than
 
-//db.people.find({salar: { $gte: 2}}, {name :1, lastname:1}) // 1 é como True
+db.people.find({salar: { $gte: 2}}, {name :1, lastname:1}) // 1 é como True
 
 // UPDATE
 
