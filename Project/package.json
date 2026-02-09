@@ -4,6 +4,7 @@
   "main": "hello.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    ,"dev": "npx tsx watch scr/server.ts"
   },
   "keywords": [],
   "author": "",
