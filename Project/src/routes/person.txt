@@ -1,0 +1,19 @@
+const pessoa = {
+    name: "FehFita",
+    lastname: "Fialho"
+}
+
+// Hello World!
+app.get('/', (req, res) => {
+    res.send({ response: "Api Funcionando!"})
+})
+
+// RECOMENDADO!
+app.get('/objeto', (req, res) => {
+    res.send({ teste : pessoa })
+})
+
+// Funciona, mas é ruim para pegar dados depois...
+app.get('/direto', (req, res) => {
+    res.send({ pessoa })
+})
