@@ -72,6 +72,7 @@ Crie o arquivo src/server.ts com o seguinte código:
 
 ```
 import express, { Request, Response } from 'express';
+import routes from "./routes/routes.ts";
 
 const app = express();
 const port = 3000;
