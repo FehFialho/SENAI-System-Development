@@ -34,6 +34,13 @@ Crie o arquivo tsconfig.json:
 
 ```npx tsc --init```
 
+Baixe o TsConfig
+
+1. Pesquisar tsconfig/bases
+2. Ver versao com node -v na cmd 
+3. Baixar os Comandos
+4. Substituir o tsconfig.json
+
 Altere ou adicione no tsconfig.json:
 
 ```
@@ -45,7 +52,7 @@ Altere ou adicione no tsconfig.json:
 
 ## Passo 3: Script de Desenvolvimento
 
-No package.json, adicione o script:
+No package.json, adicione o script para rodar o projeto:
 
 ```
 "scripts": {
