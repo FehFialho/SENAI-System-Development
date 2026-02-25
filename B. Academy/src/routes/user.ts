@@ -45,6 +45,51 @@ router
             error
             });
         }
+    })
+
+    .get('/users', async (_req: Request, res: Response) => {
+    try {
+        const users = await User.find();
+
+        if (users.length === 0) {
+        return res.status(200).json({
+            message: "Nenhum usuário cadastrado",
+            users: []
+        });
+        }
+
+        return res.status(200).json({
+        total: users.length,
+        users
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+        message: "Erro ao buscar usuários"
+        });
+    }
+    })
+
+    .get('/users/:id', async (req: Request, res: Response) => {
+    try {
+        const {id} = req.params;
+        const user = await User.findById(id);
+
+        if (!user) {
+        return res.status(404).json({
+            message: "Usuário não encontrado"
+        });
+        }
+
+        return res.status(200).json({
+            user
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: `Erro ao buscar usuário`
+        });
+    }
     });
 
 export default router;
