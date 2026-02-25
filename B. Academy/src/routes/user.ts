@@ -1,169 +1,50 @@
 import express, { Request, response, Response, Router } from 'express';
-import { skip } from 'node:test';
+import User from '../models/user';
 
 const router = express.Router();
 
-// Simulando banco de dados
-let users: any[] = []
+router  
+    .post('/register', async (req: Request, res: Response) => {
+        const { name, email, type } = req.body;
 
-router
-    // REGISTRAR
-    .post('/register', (req: Request, res: Response) => {
-        const { name, email, type } = req.body
-
-        // Verificação!
-        if (!name || !email || !type) {
-            return res.status(400).send({
+        try {
+            // Validação básica
+            if (!name || !email || !type) {
+            return res.status(400).json({
                 message: "Campos obrigatórios: name, email e type"
-            })
-        }
-
-        const id = users.length + 1 // Id Auto
-        const isActive = true // Criou agora, deve estar ativo ne mkkk
-        const createdAt = new Date().toISOString() // Tempo de agora
-
-        users.push({ name, email, type, isActive, createdAt, id })
-
-        res.status(201).send({
-            message: `Usuário ${name} registrado com sucesso [ID - ${id}]!`
-        })
-    })
-
-    // TODOS OS USUARIOS
-    .get('/get', (req: Request, res: Response) => {
-
-        if (users.length === 0) {
-            return res.status(200).send({
-                message: "Nenhum usuário registrado!",
-                users: []
-            })
-        }
-
-        res.status(200).send({ users })
-    })
-
-    // ID ESPECIFICO
-    .get('/get/:id', (req: Request, res: Response) => {
-        const id = Number(req.params.id)
-        const user = users.find(u => u.id === id)
-        // ou people[convertedId]
-
-        if (!user) {
-            return res.status(404).send({
-                message: `Usuário com ID ${id} não encontrado`
-            })
-        }
-
-        return res.status(200).send(user)
-    })
-
-    .put('/:id', (req: Request, res: Response) => {
-        const id = Number(req.params.id)
-        const { name, email, type } = req.body
-
-        const userIndex = users.findIndex(u => u.id === id)
-
-        if (userIndex === -1) {
-            return res.status(404).send({
-                message: `Usuário com ID ${id} não encontrado`
-            })
-        }
-
-        // Validação!
-        if (!name || !email || !type) {
-            return res.status(400).send({
-                message: "Campos obrigatórios: name, email e type"
-            })
-        }
-
-        // Email Duplicado
-        const emailExists = users.find(
-            u => u.email === email && u.id !== id
-        )
-
-        if (emailExists) {
-            return res.status(400).send({
-                message: "Email já está em uso por outro usuário"
-            })
-        }
-
-        // Substituir
-        users[userIndex] = {
-            id,
-            name,
-            email,
-            type,
-            isActive: users[userIndex].isActive,
-            createdAt: users[userIndex].createdAt
-        }
-
-        return res.status(200).send({
-            message: "Usuário atualizado com sucesso",
-            user: users[userIndex]
-        })
-    })
-
-    .patch('/:id', (req: Request, res: Response) => {
-        const id = Number(req.params.id)
-        const { name, email, type, isActive } = req.body
-
-        const user = users.find(u => u.id === id)
-
-        // Verificação
-        if (!user) {
-            return res.status(404).send({
-                message: `Usuário com ID ${id} não encontrado`
-            })
-        }
-
-        // Email Duplicado
-        if (email) {
-            const emailExists = users.find(
-                u => u.email === email && u.id !== id
-            )
-
-            if (emailExists) {
-                return res.status(400).send({
-                    message: "Email já está em uso por outro usuário"
-                })
+            });
             }
 
-            user.email = email
-        }
+            // Verificar email duplicado
+            const emailExists = await User.findOne({ email });
 
-        // Atualização
-        if (name) user.name = name
-        if (type) user.type = type
-        if (typeof isActive === "boolean") user.isActive = isActive
+            if (emailExists) {
+            return res.status(400).json({
+                message: "Email já está em uso"
+            });
+            }
 
-        return res.status(200).send({
-            message: "Usuário atualizado com sucesso",
+            // Criar usuário
+            const user = new User({
+            name,
+            email,
+            type
+            // isActive e createdAt já têm default no schema
+            });
+
+            await user.save();
+
+            return res.status(201).json({
+            message: "Usuário criado com sucesso",
             user
-        })
-    })
+            });
 
-    .delete('/:id', (req: Request, res: Response) => {
-    
-        const id = Number(req.params.id)
-        const userIndex = users.findIndex(u => u.id === id)
-
-        if (userIndex === -1) {
-            return res.status(404).send({
-                message: "Usuário não encontrado"
-            })
+        } catch (error) {
+            return res.status(400).json({
+            message: "Erro ao criar usuário",
+            error
+            });
         }
-
-        users.splice(userIndex, 1)
-
-        return res.status(200).send({
-            message: "Usuário removido com sucesso"
-        })
-    })
+    });
 
 export default router;
-
-// {
-//   "name": "Fernanda Fialho",
-//   "email": "fernanda@email.com",
-//   "type": "coordenador"
-// }
