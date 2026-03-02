@@ -9,6 +9,12 @@ router
 
     .get('/users', UserController.getUsers)
 
-    .get('/users/:id', UserController.getUserById);
+    .get('/users/:id', UserController.getUserById)
+
+    .put('/users/replace/:id', UserController.replaceById)
+
+    .put('/users/update/:id', UserController.updateById)
+
+    .delete('/users/delete/:id', UserController.deleteById);
 
 export default router;

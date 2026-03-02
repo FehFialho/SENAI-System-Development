@@ -94,6 +94,107 @@ class UserController {
             });
         }
     }
+
+    // PUT
+    static async replaceById(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const { name, email, type, isActive } = req.body
+
+            if (!name || !email || !type) {
+            return res.status(400).json({
+                message: 'name, email e type são obrigatórios'
+            })
+            }
+
+            const user = await User.findOneAndReplace(
+            { _id: id },
+            {
+                name,
+                email,
+                type,
+                isActive: isActive ?? true,
+                createdAt: new Date()
+            },
+            {
+                returnDocument: 'after', // REtorna apos a atualizacao
+                runValidators: true
+            }
+            )
+
+            if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' })
+            }
+
+            return res.status(200).json(user)
+
+        } 
+        catch (error: any) {
+            return res.status(500).json({
+            message: 'Erro ao substituir usuário',
+            error: error.message
+            })
+        }
+    }
+
+    // PATCH
+    static async updateById(req: Request, res: Response) {
+    try {
+        const { id } = req.params
+        const data = req.body
+
+        if (Object.keys(data).length === 0) {
+        return res.status(400).json({
+            message: 'Envie pelo menos um campo'
+        })
+        }
+
+        const user = await User.findByIdAndUpdate(
+        id,
+        data,
+        {
+            returnDocument: 'after',
+            runValidators: true
+        }
+        )
+
+        if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' })
+        }
+
+        return res.status(200).json(user)
+
+    } catch (error: any) {
+        return res.status(500).json({
+        message: 'Erro ao atualizar usuário',
+        error: error.message
+        })
+    }
+    }
+    
+    // DELETE
+    static async deleteById(req: Request, res: Response) {
+    try {
+        const { id } = req.params
+
+        const user = await User.findByIdAndDelete(id)
+
+        if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' })
+        }
+
+        return res.status(200).json({
+        message: 'Usuário deletado com sucesso',
+        deletedUser: user
+        })
+
+    } catch (error: any) {
+        return res.status(500).json({
+        message: 'Erro ao deletar usuário',
+        error: error.message
+        })
+    }
+    }
 }
 
 export default UserController

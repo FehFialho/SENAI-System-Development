@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tsx watch src/server.ts"
+    "dev": "npx tsx watch src/server.ts",
+    "gitrem": "git config --global --unset user.name && git config --global --unset user.email",
+    "gitadd": "git config --global user.name \"FehFialho\" && git config --global user.email \"fernandaklechowicz@gmail.com\""
   },
   "keywords": [],
   "author": "",
