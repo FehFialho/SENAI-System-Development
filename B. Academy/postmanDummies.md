@@ -24,4 +24,10 @@
   "email": "becca@email.com",
   "type": "professor"
 }
+
+{
+  "name": "Malu Geraldo",
+  "email": "malula@email.com",
+  "type": "aluno"
+}
 ```

@@ -56,27 +56,13 @@ class UserController {
         const { name, email, type } = req.body;
 
         try {
-            // Validação básica
-            if (!name || !email || !type) {
-            return res.status(400).json({
-                message: "Campos obrigatórios: name, email e type"
-            });
-            }
-
-            // Verificar email duplicado
-            const emailExists = await User.findOne({ email });
-
-            if (emailExists) {
-            return res.status(400).json({
-                message: "Email já está em uso"
-            });
-            }
 
             // Criar usuário
             const user = new User({
             name,
             email,
             type
+
             // isActive e createdAt já têm default no schema
             });
 
@@ -171,7 +157,7 @@ class UserController {
         })
     }
     }
-    
+
     // DELETE
     static async deleteById(req: Request, res: Response) {
     try {
