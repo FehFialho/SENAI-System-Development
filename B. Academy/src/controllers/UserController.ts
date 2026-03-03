@@ -129,12 +129,6 @@ class UserController {
         const { id } = req.params
         const data = req.body
 
-        if (Object.keys(data).length === 0) {
-        return res.status(400).json({
-            message: 'Envie pelo menos um campo'
-        })
-        }
-
         const user = await User.findByIdAndUpdate(
         id,
         data,
