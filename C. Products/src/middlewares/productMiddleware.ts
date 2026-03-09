@@ -3,43 +3,41 @@ import mongoose from "mongoose"
 
 export function validateRequiredFields(fields: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const missingFields = fields.filter(field => !req.body[field])
+    const missingFields = fields.filter(field => req.body[field] === undefined);
 
     if (missingFields.length > 0) {
-      return res.status(400).json({
+      res.status(400).json({
         message: `Campos obrigatórios: ${missingFields.join(', ')}`
-      })
+      });
+    } else {
+      next();
     }
-
-    next()
-  }
+  };
 }
 
 export function validateBodyNotEmpty(req: Request, res: Response, next: NextFunction) {
   if (!req.body || Object.keys(req.body).length === 0) {
-    return res.status(400).json({
+    res.status(400).json({
       message: 'Envie pelo menos um campo'
-    })
+    });
+  } else {
+    next();
   }
-
-  next()
 }
 
-export function validateObjectIdParam(paramName: string) {
-  return (req: Request, res: Response, next: NextFunction) => {
-    let value = req.params[paramName];
+export function validateObjectId(req: Request, res: Response, next: NextFunction) {
+  let { id } = req.params;
 
-    // Se o parâmetro veio como array, pega o primeiro
-    if (Array.isArray(value)) {
-      value = value[0];
-    }
+  // Se id veio como array, pega o primeiro
+  if (Array.isArray(id)) {
+    id = id[0];
+  }
 
-    if (!value || !mongoose.Types.ObjectId.isValid(value)) {
-      return res.status(400).json({
-        message: `Parâmetro "${paramName}" inválido`
-      });
-    }
-
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400).json({
+      message: "ID inválido"
+    });
+  } else {
     next();
-  };
+  }
 }
