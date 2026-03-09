@@ -1,4 +1,5 @@
-import { NextFunction } from "express"
+import { Request, Response, NextFunction } from "express"
+import mongoose from "mongoose"
 
 export function validateRequiredFields(fields: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -22,4 +23,23 @@ export function validateBodyNotEmpty(req: Request, res: Response, next: NextFunc
   }
 
   next()
+}
+
+export function validateObjectIdParam(paramName: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    let value = req.params[paramName];
+
+    // Se o parâmetro veio como array, pega o primeiro
+    if (Array.isArray(value)) {
+      value = value[0];
+    }
+
+    if (!value || !mongoose.Types.ObjectId.isValid(value)) {
+      return res.status(400).json({
+        message: `Parâmetro "${paramName}" inválido`
+      });
+    }
+
+    next();
+  };
 }
