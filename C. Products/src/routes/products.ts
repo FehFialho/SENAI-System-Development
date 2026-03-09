@@ -5,7 +5,7 @@ import { validateBodyNotEmpty, validateRequiredFields } from '../middlewares/pro
 const router = express.Router();
 
 router
-  .post('/products', validateBodyNotEmpty, ProductController.registerProduct)
+  .post('/products', validateRequiredFields, ProductController.registerProduct)
   
   .get('/products', ProductController.getProducts)
   .get('/products/filter', ProductController.filter)
