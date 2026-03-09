@@ -1,10 +1,14 @@
 import express, { Request, Response } from 'express';
 import connectDB from './database/database';
 import routes from './routes/routes';
-// import routes from "./routes/routes.ts";
+import cors from 'cors'
 
 const app = express();
-const port = 3000;
+const port = 8080;
+
+app.use(cors({
+    origin: '*'
+}))
 
 connectDB();
 routes(app);
