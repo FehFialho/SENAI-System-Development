@@ -25,13 +25,21 @@ export default function Navbar() {
         >
           Produtos
         </Link>
+        
+        <Link 
+          to="/user/register" 
+          className="hover:text-cyan-400 transition"
+        >
+          Cadastro
+        </Link>
 
         <Link 
           to="/product/new" 
           className="hover:text-cyan-400 transition"
         >
-          Suporte
+          Novo Produto
         </Link>
+
 
       </div>
 
