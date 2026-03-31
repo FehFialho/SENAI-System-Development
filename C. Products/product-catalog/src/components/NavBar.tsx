@@ -34,6 +34,13 @@ export default function Navbar() {
         </Link>
 
         <Link 
+          to="/user/login" 
+          className="hover:text-cyan-400 transition"
+        >
+          Login
+        </Link>
+
+        <Link 
           to="/product/new" 
           className="hover:text-cyan-400 transition"
         >

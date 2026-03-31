@@ -1,56 +1,42 @@
 import axios from "axios"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 
-export default function UserRegisterPage() {
+export default function UserLoginPage() {
 
-  const navigate = useNavigate();
-  const [name, setName] = useState("")
+    const navigate = useNavigate();
+
+//   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
 
-
-  const handleRegister = async () => {
+  const handleLogin = async () => {
     try{
-      handleSubmit
-      await axios.post('https://localhost:8080/api/auth/register', {name, email, password})
+        const response = await axios.post('http://localhost:8080/api/auth/login', {email, password})
+
+        // cache do navegador
+        sessionStorage.setItem('token', response.data.token)
+
+        console.log("Logado")
         Swal.fire({
             title: 'Sucesso!',
             text: 'Logado!',
             icon: 'success'
         })
-        navigate('/login')
+        navigate('/products')
     }
     catch{
+        console.log("ERRO")
         Swal.fire({
             title: 'Erro!',
             text: 'Usuário ou Senha Incorreta',
             icon: 'error'
         })
     }
-    setName('')
+    
     setEmail('')
     setPassword('')
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (password !== confirmPassword) {
-      alert("As senhas não coincidem!")
-      return
-    }
-
-    const user = {
-      name,
-      email,
-      password
-    }
-
-    alert("Usuário Cadastrado com Sucesso!")
-    console.log(user)
   }
 
   return (
@@ -64,16 +50,7 @@ export default function UserRegisterPage() {
         </h1>
 
         {/* Formulário */}
-        <form onSubmit={handleRegister} className="flex flex-col gap-4">
-
-          {/* Nome */}
-          <input
-            type="text"
-            placeholder="Nome"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="p-3 rounded bg-white/90 text-gray-700 outline-none"
-          />
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
 
           {/* Email */}
           <input
@@ -90,15 +67,6 @@ export default function UserRegisterPage() {
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="p-3 rounded bg-white/90 text-gray-700 outline-none"
-          />
-
-          {/* Confirmar Senha */}
-          <input
-            type="password"
-            placeholder="Confirmar senha"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
             className="p-3 rounded bg-white/90 text-gray-700 outline-none"
           />
 
