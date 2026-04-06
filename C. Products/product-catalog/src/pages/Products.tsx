@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
 
 export default function Products() {
 
@@ -10,6 +11,26 @@ export default function Products() {
   const fetchData = async () => {
     const response = await axios.get("http://localhost:8080/api/products")
     setProducts(response.data.products)
+  }
+
+  const handleDelete = async (_id: string) => {
+    
+    try{
+      await axios.delete(`http://localhost:8080/api/products/${_id}`)
+      Swal.fire({
+        title: "Sucesso!",
+        text: "Produto Deletado.",
+        icon: "success"
+      })
+      fetchData()
+    }
+    catch{
+      Swal.fire({
+        title: "Erro!",
+        text: "Ocorreu um erro ao deletar o produto.",
+        icon: "error"
+      })
+    }
   }
 
   useEffect(() => {
@@ -27,6 +48,12 @@ export default function Products() {
             products.map((product: any) => (
               <div key={product._id} className='bg-gray-100/90 w-80 h-64 p-5 rounded-lg flex flex-col'>
                 
+                <button 
+                  type="button"
+                  onClick={() => handleDelete(product._id)}
+                  className="self-end text-red-900 font-bold text-2xl">
+                x</button>
+
                 <span className='font-bold text-gray-700 text-2xl'>
                   {product.name}
                 </span>
