@@ -1,4 +1,6 @@
+import axios from "axios"
 import { useState } from "react"
+import Swal from "sweetalert2"
 
 export default function ProductFormPage() {
 
@@ -8,18 +10,44 @@ export default function ProductFormPage() {
   const [price, setPrice] = useState("")
   const [stock, setStock] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault()
+
+  //   const product = {
+  //     name,
+  //     description,
+  //     category,
+  //     price,
+  //     stock
+  //   }
+
+  //   console.log(product)
+  // }
+
+  const handleRegister = async (e: any) => {
     e.preventDefault()
+    
+    try{
+      await axios.post('http://localhost:8080/api/products', {name, description, category, price, stock})
+      Swal.fire({
+        title: "Sucesso!",
+        text: "Seu produto foi cadastrado.",
+        icon: "success"
+      })
 
-    const product = {
-      name,
-      description,
-      category,
-      price,
-      stock
+      setName("");
+      setCategory("");
+      setDescription("");
+      setPrice("");
+      setStock("");
     }
-
-    console.log(product)
+    catch{
+      Swal.fire({
+        title: "Erro!",
+        text: "Confira se todos os campos foram preenchidos.",
+        icon: "error"
+      })
+    }
   }
 
   return (
@@ -33,7 +61,7 @@ export default function ProductFormPage() {
         </h1>
 
         {/* Formulário */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleRegister} className="flex flex-col gap-4">
 
           {/* Nome */}
           <input
