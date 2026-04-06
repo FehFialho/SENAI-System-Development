@@ -3,7 +3,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 
-export default function Products() {
+export default function ProductShowPage() {
 
   const [products, setProducts] = useState<any[]>([])
   const navigate = useNavigate()
@@ -11,6 +11,10 @@ export default function Products() {
   const fetchData = async () => {
     const response = await axios.get("http://localhost:8080/api/products")
     setProducts(response.data.products)
+  }
+
+  const updateProduct = async (_id: string) => {
+    return navigate(`/product/update/${_id}`)
   }
 
   const handleDelete = async (_id: string) => {
@@ -73,6 +77,8 @@ export default function Products() {
                 <span>
                   Estoque: {product.stock}
                 </span>
+
+                <button onClick={() => updateProduct(product._id)} type="button" className="bg-cyan-600 text-white p-1.5 mt-5 rounded-xs w-[90%] self-center">Atualizar</button>
 
               </div>
             ))
