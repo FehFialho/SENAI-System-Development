@@ -46,7 +46,7 @@ export default function UserLoginPage() {
 
         {/* Título */}
         <h1 className="text-white text-3xl font-bold text-center">
-          Criar Conta
+          Login
         </h1>
 
         {/* Formulário */}
@@ -75,7 +75,7 @@ export default function UserLoginPage() {
             type="submit"
             className="bg-cyan-700 hover:bg-cyan-800 text-white p-3 rounded font-semibold transition"
           >
-            Cadastrar
+            Entrar
           </button>
 
         </form>

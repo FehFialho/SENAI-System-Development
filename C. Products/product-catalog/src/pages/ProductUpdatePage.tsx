@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useEffectEvent, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import Swal from "sweetalert2"
 
@@ -51,32 +51,6 @@ export default function ProductFormPage() {
   useEffect(() => {
     getProductData()
   })
-
-  const handleRegister = async (e: any) => {
-    e.preventDefault()
-    
-    try{
-      await axios.post('http://localhost:8080/api/products', {name, description, category, price, stock})
-      Swal.fire({
-        title: "Sucesso!",
-        text: "Seu produto foi cadastrado.",
-        icon: "success"
-      })
-
-      setName("");
-      setCategory("");
-      setDescription("");
-      setPrice("");
-      setStock("");
-    }
-    catch{
-      Swal.fire({
-        title: "Erro!",
-        text: "Confira se todos os campos foram preenchidos.",
-        icon: "error"
-      })
-    }
-  }
 
   return (
     <section className="bg-cyan-600 min-h-screen flex justify-center items-center p-6">

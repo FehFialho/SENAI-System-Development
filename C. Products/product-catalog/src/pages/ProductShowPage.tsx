@@ -41,59 +41,62 @@ export default function ProductShowPage() {
     fetchData()
   }, [])
 
-    return (
-    <section className='bg-cyan-600 flex flex-col w-screen min-h-screen justify-center items-center p-4'>
+      return (
+      <section className='bg-cyan-600 w-screen min-h-screen p-6 flex items-center justify-center align-center flex-col'>
 
-      <section className='flex justify-center items-center p-4'>
+        <div className="bg-gray-50 w-2/3 max-h-[500px] overflow-y-auto rounded-sm shadow-lg">
 
-        {/* Map */}
-        <section className='bg-white/20 max-w-6xl h-9/10 p-6 flex flex-row flex-wrap justify-around items-center gap-8 rounded-lg'>
-          {
-            products.map((product: any) => (
-              <div key={product._id} className='bg-gray-100/90 w-80 h-64 p-5 rounded-lg flex flex-col'>
-                
-                <button 
-                  type="button"
-                  onClick={() => handleDelete(product._id)}
-                  className="self-end text-red-900 font-bold text-2xl">
-                x</button>
+            <table className="w-full text-sm text-center text-gray-600">
+                                
+              <thead className="bg-cyan-700 text-xs text-white uppercase">
+                  <tr>
+                      <th className="px-6 py-4">Nome</th>
+                      <th className="px-6 py-4">Qtd</th>
+                      <th className="px-6 py-4">Preço</th>
+                      <th className="px-6 py-4">Ações</th>
+                  </tr>
+              </thead>
 
-                <span className='font-bold text-gray-700 text-2xl'>
-                  {product.name}
-                </span>
+              <tbody>
+                  {products.map((product) => (
+                      <tr 
+                          key={product._id} 
+                          className="border-b last:border-none hover:bg-gray-100 transition"
+                      >
+                          <td className="px-6 py-4 font-medium text-gray-800">
+                              {product.name}
+                          </td>
 
-                <span className='text-gray-600'>
-                  {product.description}
-                </span>
+                          <td className="px-6 py-4">
+                              <span className="bg-cyan-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                                  {product.stock}
+                              </span>
+                          </td>
 
-                <span>
-                  Categoria: {product.category}
-                </span>
+                          <td className="px-6 py-4 font-medium text-gray-700">
+                              {product.price.toLocaleString('pt-BR', { 
+                                  style: 'currency', 
+                                  currency: 'BRL' 
+                              })}
+                          </td>
+                          <td className="px-6 py-4 font-medium">
+                              <button className="rounded-sm p-2 bg-cyan-600 text-white mx-4" onClick={() => updateProduct(product._id)}>Atualizar</button>
+                              <button className="rounded-sm p-2 bg-red-800 text-white mx-4" onClick={() => handleDelete(product._id)}>Deletar</button>
+                          </td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
+        </div>
 
-                <span className='font-semibold'>
-                  R$ {product.price}
-                </span>
-
-                <span>
-                  Estoque: {product.stock}
-                </span>
-
-                <button onClick={() => updateProduct(product._id)} type="button" className="bg-cyan-600 text-white p-1.5 mt-5 rounded-xs w-[90%] self-center">Atualizar</button>
-
-              </div>
-            ))
-          }
-        </section>
-
+        <div className="flex justify-center mt-6">
+            <button 
+                onClick={() => navigate(`/product/new`)}
+                className="bg-cyan-700 text-white px-6 py-3 rounded-sm font-medium shadow-md hover:bg-cyan-800 hover:scale-105 transition"
+            >
+                Novo Produto
+            </button>
+        </div>
       </section>
-
-      <button
-        type="button"
-        className=" w-1/2 bg-cyan-700 hover:bg-cyan-800 text-white p-3 rounded font-semibold transition"
-        onClick={() => navigate('/product/new')}
-      >
-        Novo Produto
-      </button>
-    </section>
   )
 }
