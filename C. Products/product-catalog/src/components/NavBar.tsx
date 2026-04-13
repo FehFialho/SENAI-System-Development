@@ -6,7 +6,7 @@ export default function Navbar() {
 
       {/* Logo */}
       <span className="text-2xl font-bold">
-        🛒 Marques Produtos
+        Marques Produtos
       </span>
 
       {/* Links */}

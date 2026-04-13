@@ -17,16 +17,22 @@ export default function ProductFormPage() {
   const getProductData = async () => {
     const response = await axios.get(`http://localhost:8080/api/products/${id}`)
     console.log(response.data)
-    setName(response.data.name)
-    setDescription(response.data.description)
-    setCategory(response.data.category)
-    setPrice(response.data.price)
-    setStock(response.data.stock)
+    setName(response.data.product.name)
+    setDescription(response.data.product.description)
+    setCategory(response.data.product.category)
+    setPrice(response.data.product.price)
+    setStock(response.data.product.stock)
   }
 
   const handleUpdate = async (id: string) => {
     try{
-      await axios.put(`http://localhost:8080/api/products/update/${id}`, {name, description, category, price, stock})
+      await axios.put(`http://localhost:8080/api/products/${id}`, {
+        name,
+        description,
+        category,
+        price: Number(price),
+        stock: Number(stock)
+      })
       Swal.fire({
         title: "Sucesso!",
         text: "Seu produto foi atualizado.",
@@ -49,8 +55,10 @@ export default function ProductFormPage() {
   }
 
   useEffect(() => {
-    getProductData()
-  })
+    if (id) {
+      getProductData()
+    }
+  }, [id])
 
   return (
     <section className="bg-cyan-600 min-h-screen flex justify-center items-center p-6">
@@ -63,7 +71,12 @@ export default function ProductFormPage() {
         </h1>
 
         {/* Formulário */}
-        <form onSubmit={() => handleUpdate(id)} className="flex flex-col gap-4">
+        <form onSubmit={(e) => {
+          e.preventDefault()
+          if (!id) return
+          handleUpdate(id)
+          }} className="flex flex-col gap-4"
+        >
 
           {/* Nome */}
           <input
